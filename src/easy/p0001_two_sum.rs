@@ -18,7 +18,10 @@ impl Solution {
         // Vec::new()
 
         // SOLUTION #2
-
+        // Im̀ using a hash map instead of 2 loop
+        // Initially, I was inserting in the hashMap at the first line of the loop. Was working for
+        // example_1 and example_2, but not for example_3
+        // You need to insert in the hashMap after
         let mut hash_map_num_index: HashMap<i32, usize> = HashMap::new();
         for (index, number) in nums.iter().enumerate() {
             if hash_map_num_index.contains_key(&(target - *number)) {
