@@ -72,10 +72,6 @@ impl Solution {
             x_copy /= 10;
         }
 
-        // for &digit in &digits {
-        //     number = number * 10 + digit;
-        // }
-
         if x != number {
             return false;
         };
