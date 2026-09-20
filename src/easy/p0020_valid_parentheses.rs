@@ -4,33 +4,67 @@ pub struct Solution;
 
 impl Solution {
     pub fn is_valid(s: String) -> bool {
-        let matching_symbol = HashMap::from([('(', ')'), ('[', ']'), ('{', '}')]);
-        let mut opening_symbols_buffer: Vec<char> = vec![];
+        // SOLUTION #1
+        // let matching_symbol = HashMap::from([('(', ')'), ('[', ']'), ('{', '}')]);
+        // let mut opening_symbols_buffer: Vec<char> = vec![];
 
-        // Valid answers must have a number of characters that can by divided by 2
+        // // Valid answers must have a number of characters that can by divided by 2
+        // if s.len() % 2 != 0 {
+        //     return false;
+        // }
+
+        // for character in s.chars() {
+        //     if matches!(character, '(' | '[' | '{') {
+        //         opening_symbols_buffer.push(character);
+        //     } else {
+        //         if let Some(opening_symbol) = opening_symbols_buffer.pop() {
+        //             if matching_symbol[&opening_symbol] != character {
+        //                 return false;
+        //             }
+        //         } else {
+        //             return false;
+        //         }
+        //     }
+        // }
+
+        // if !opening_symbols_buffer.is_empty() {
+        //     return false;
+        // }
+
+        // true
+
+        // SOLUTION #2
         if s.len() % 2 != 0 {
             return false;
         }
 
+        let mut stack = Vec::new();
+
         for character in s.chars() {
-            if matches!(character, '(' | '[' | '{') {
-                opening_symbols_buffer.push(character);
-            } else {
-                if let Some(opening_symbol) = opening_symbols_buffer.pop() {
-                    if matching_symbol[&opening_symbol] != character {
+            match character {
+                '(' | '[' | '{' => stack.push(character),
+
+                ')' => {
+                    if stack.pop() != Some('(') {
                         return false;
                     }
-                } else {
-                    return false;
                 }
+                ']' => {
+                    if stack.pop() != Some('[') {
+                        return false;
+                    }
+                }
+                '}' => {
+                    if stack.pop() != Some('{') {
+                        return false;
+                    }
+                }
+
+                _ => return false,
             }
         }
 
-        if !opening_symbols_buffer.is_empty() {
-            return false;
-        }
-
-        true
+        stack.is_empty()
     }
 }
 
