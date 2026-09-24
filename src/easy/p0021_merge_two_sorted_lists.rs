@@ -1,5 +1,3 @@
-use std::collections::btree_map::ValuesMut;
-
 // Definition for singly-linked list.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
@@ -33,25 +31,58 @@ impl Solution {
         list1: Option<Box<ListNode>>,
         list2: Option<Box<ListNode>>,
     ) -> Option<Box<ListNode>> {
-        let mut current_list1 = &list1;
-        let mut current_list2 = &list2;
+        // SOLUTION #1 - REALLY INEFFICIENT
+        // let mut current_list1 = &list1;
+        // let mut current_list2 = &list2;
 
-        let mut vec: Vec<i32> = Vec::new();
+        // let mut vec: Vec<i32> = Vec::new();
 
-        while let Some(node) = current_list1 {
-            println!("Valeur du nœud : {}", node.val);
-            vec.push(node.val);
-            current_list1 = &node.next;
+        // while let Some(node) = current_list1 {
+        //     println!("Valeur du nœud : {}", node.val);
+        //     vec.push(node.val);
+        //     current_list1 = &node.next;
+        // }
+
+        // while let Some(node) = current_list2 {
+        //     vec.push(node.val);
+        //     current_list2 = &node.next;
+        // }
+
+        // vec.sort_unstable();
+
+        // return create_list(&vec);
+
+        // SOLUTION #2
+        let mut current1 = &list1;
+        let mut current2 = &list2;
+        let mut vec_of_ordered_values: Vec<i32> = Vec::new();
+
+        // The while loop will end when one of the 2 nodes is empty -> I'll need 2 others loop to complete the work
+        while let (Some(node1), Some(node2)) = (current1, current2) {
+            let mininum_value = node1.val.min(node2.val);
+
+            vec_of_ordered_values.push(mininum_value);
+
+            if mininum_value == node1.val {
+                current1 = &node1.next;
+            } else {
+                current2 = &node2.next;
+            }
         }
 
-        while let Some(node) = current_list2 {
-            vec.push(node.val);
-            current_list2 = &node.next;
+        // If there is any node left in node1, add those to the vec
+        while let Some(node1) = current1 {
+            vec_of_ordered_values.push(node1.val);
+            current1 = &node1.next;
         }
 
-        vec.sort_unstable();
+        // If there is any node left in node2, add those to the vec
+        while let Some(node2) = current2 {
+            vec_of_ordered_values.push(node2.val);
+            current2 = &node2.next;
+        }
 
-        return create_list(&vec);
+        return create_list(&vec_of_ordered_values);
     }
 }
 
