@@ -2,17 +2,23 @@ pub struct Solution;
 
 impl Solution {
     pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
-        let poping = (n + m) - m;
+        // SOLUTION #1 (beats 100%)
+        // let poping = (n + m) - m;
 
-        for i in 0..poping {
-            nums1.pop();
-        }
+        // for i in 0..poping {
+        //     nums1.pop();
+        // }
 
-        for i in 0..n {
-            nums1.push(nums2[i as usize]);
-        }
+        // for i in 0..n {
+        //     nums1.push(nums2[i as usize]);
+        // }
 
-        nums1.sort();
+        // nums1.sort();
+
+        // SOLUTION #2 - A MORE IDIOMATIC SOLUTION
+        nums1.truncate(m as usize);
+        nums1.extend_from_slice(&nums2[..n as usize]);
+        nums1.sort_unstable();
     }
 }
 
