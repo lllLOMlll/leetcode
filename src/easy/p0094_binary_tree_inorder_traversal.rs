@@ -17,14 +17,83 @@ impl TreeNode {
     }
 }
 
+// Explication of the TreeNode structure
+// Il y a peut-être (Option) une référence partagée (Rc) vers un nœud que je peux emprunter/modifier (RefCell).
+//
+//
+/*
+This help me to understand the problem:
+
+Petit exercice avant de toucher au code
+Avec cet arbre :
+        4
+       / \
+      2   6
+     / \
+    1   3
+
+Sur papier, complète seulement ceci :
+inorder = [ ?, ?, ?, ?, ? ]
+
+en appliquant strictement :
+LEFT → NODE → RIGHT
+
+Puis modifie uniquement l'ordre des trois opérations dans traverse_and_build_vec.
+Ne change rien à Rc, RefCell, borrow(), clone() ou inorder_traversal. Ton mécanisme récursif pour descendre dans l'arbre est déjà suffisant.
+Si tu me donnes le vecteur que tu obtiens manuellement pour cet arbre, je te dirai si ton raisonnement est correct sans te donner le code final.
+*/
+
 pub struct Solution;
+
+pub fn traverse(root: Option<Rc<RefCell<TreeNode>>>) {
+    if let Some(node) = root {
+        let node = node.borrow(); // borrow_mut exits
+
+        traverse(node.left.clone());
+        traverse(node.right.clone());
+    }
+}
+
+pub fn traverse_and_build_vec(root: Option<Rc<RefCell<TreeNode>>>, inorder_vec: &mut Vec<i32>) {
+    if let Some(node) = root {
+        // let node = node.borrow();
+
+        // inorder_vec.push(node.val);
+
+        // traverse_and_build_vec(node.left.clone(), inorder_vec);
+        // traverse_and_build_vec(node.right.clone(), inorder_vec);
+
+        let node = node.borrow();
+        traverse_and_build_vec(node.left.clone(), inorder_vec);
+
+        inorder_vec.push(node.val);
+
+        traverse_and_build_vec(node.right.clone(), inorder_vec);
+    }
+}
 
 use std::cell::RefCell;
 use std::rc::Rc;
 impl Solution {
     pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
-        let response: Vec<i32> = vec![];
-        response
+        let mut inorder_vec: Vec<i32> = vec![];
+
+        // if let Some(node) = root {
+        //     let node = node.borrow();
+
+        //     inorder_vec.push(node.val);
+
+        //     traverse(node.left.clone());
+        //     traverse(node.right.clone());
+        // }
+
+        traverse_and_build_vec(root, &mut inorder_vec);
+
+        for val in &inorder_vec {
+            println!("#{}, ", val);
+        }
+
+        inorder_vec
     }
 }
 
