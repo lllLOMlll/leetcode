@@ -56,13 +56,6 @@ pub fn traverse(root: Option<Rc<RefCell<TreeNode>>>) {
 
 pub fn traverse_and_build_vec(root: Option<Rc<RefCell<TreeNode>>>, inorder_vec: &mut Vec<i32>) {
     if let Some(node) = root {
-        // let node = node.borrow();
-
-        // inorder_vec.push(node.val);
-
-        // traverse_and_build_vec(node.left.clone(), inorder_vec);
-        // traverse_and_build_vec(node.right.clone(), inorder_vec);
-
         let node = node.borrow();
         traverse_and_build_vec(node.left.clone(), inorder_vec);
 
